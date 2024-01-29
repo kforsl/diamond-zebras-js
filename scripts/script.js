@@ -41,3 +41,16 @@ function changeImage(event) {
         gameOver();
     }
 }
+
+function checkForGameOver() {
+    //Här hämtar vi alla bilder på spöken och katter och lägger dem i variablar.
+    let ghosts = document.querySelectorAll('img[src="/resources/ghost.png"]');
+    let kittens = document.querySelectorAll('img[src="/resources/kitten.png"]');
+    //Här kollar vi om längden på ghost och längden på kittens är lika med noll. Om det är sant returnes true annars false.
+    // Vid true kommer spelet anropa funktionen gameOver().
+    if(ghosts.length === 0 && kittens.length === 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
