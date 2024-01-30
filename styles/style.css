@@ -11,3 +11,13 @@ img {
 }
 
 /* Koden ovanför är obligatorisk. Ereventuella CSS skriver ni nedanför denna kommentar */
+/* sätter storleken på gameArea till hela skärmen */
+.gameArea {
+    height: 100vh;
+    width: 100vw;
+}
+
+/* class d-none för att gömma element */
+.d-none {
+    display: none;
+}
