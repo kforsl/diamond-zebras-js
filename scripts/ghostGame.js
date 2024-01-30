@@ -5,6 +5,11 @@
 
 let oGameData = {
 
+    count: 0,
+
+    src: ``,
+    alt: ``,
+
     ghost: { width: 300, height: 300 },
     net: { width: 300, height: 300 },
 

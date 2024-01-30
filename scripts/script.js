@@ -5,33 +5,33 @@ window.addEventListener('load', () => {
 
 });
 
-validateNotAfraid()
-
-//tar input med id 'question'
-const checkbox = document.querySelector('#question');
-
-const notAfraidGhosts = true;
-console.log(notAfraidGhosts);
+document.querySelector(`#spela`).addEventListener(`click`, validateNotAfraid)
 
 
-//lägg til händelse
-checkbox.addEventListener('click', function () {
+function validateNotAfraid(event) {
+    event.preventDefault();
+    //tar input med id 'question'
+    const checkbox = document.querySelector('#question');
+
     if (checkbox.checked) {
         console.log('Spelare är inte rädd');
-    } else {
+        oGameData.src = "/resources/ghost.png";
+        oGameData.alt = "Bild på ett spöke"
+        initGame()
+    } else if (!checkbox.checked) {
         console.log('Spelare är rädd');
+        oGameData.src = "/resources/kitten.png";
+        oGameData.alt = "Bild på en katt"
+        initGame()
     }
-});
-
+}
 
 function initGame() {
     // Döljer Formulär när man loggat in. 
     document.querySelector(`#formDiv`).classList.add(`d-none`);
 
-    // oGameData?? 
     const minGhost = 10;
     const maxGhost = 15;
-    // 
 
     // slumpar ett tal mellan minGhost och maxGhost.
     const escapedGhost = Math.floor(Math.random() * (maxGhost - minGhost + 1) + minGhost)
@@ -47,8 +47,8 @@ function initGame() {
         const imgRef = document.createElement(`img`);
 
         // Sätter src och alt text på img element.
-        imgRef.src = `../resources/ghost.png`; // oGameData.imgSrc ?? 
-        imgRef.alt = `image of a Ghost`; // oGameData.imgAlt ?? 
+        imgRef.src = oGameData.src;
+        imgRef.alt = oGameData.alt;
 
         // slumpar position på spöken på skärmen.
         imgRef.style.left = `${oGameData.left()}px`
@@ -59,43 +59,40 @@ function initGame() {
         // lägger in img i gameArea 
         gameArea.appendChild(imgRef);
     }
-
 }
 
-function changeImage(event) {    
-    //Här kollar vi om count är undefined. Om den är det får den värdet 0, annars räknas det upp.
-    changeImage.count = changeImage.count || 0;
+function changeImage(event) {
 
     //Här hämtar vi checkboxen för att kunna kolla den senare.
     let notAfraid = document.querySelector('#question');
     //Här kollar vi om checkboxen är ikryssad för då kommer vi jobba med bilder på ett spöke.
-    if(notAfraid.checked) {
+    if (notAfraid.checked) {
         //Om bilden som vi för muspekaren över innehåller ghost.png så ändrar vi src till net.png och räknar upp count.
-        if(event.target.src.includes("/resources/ghost.png")){
+        if (event.target.src.includes("/resources/ghost.png")) {
             event.target.src = "/resources/net.png";
-            changeImage.count++;
+            oGameData.count++;
             //Vi anropar funktionen checkForGameOver för att se om spelet är slut eller inte.
             checkForGameOver();
-        //Om bilden som vi för muspekaren över innehåller net.png byter ändrar vi src till ghost.png och räknar upp
-        } else if(event.target.src.includes("/resources/net.png")){
-            changeImage.count++;
+            //Om bilden som vi för muspekaren över innehåller net.png byter ändrar vi src till ghost.png och räknar upp
+        } else if (event.target.src.includes("/resources/net.png")) {
+            oGameData.count++;
             event.target.src = "/resources/ghost.png";
         }
-    // Om checkboxen INTE är ikryssad jobbar vi med bilder på en katt.
-    } else if(!notAfraid.checked) {
+        // Om checkboxen INTE är ikryssad jobbar vi med bilder på en katt.
+    } else if (!notAfraid.checked) {
         //Om bilden som vi för muspekaren över innehåller kitten.png så ändrar vi src till net.png och räknar upp count.
-        if(event.target.src.includes("/resources/kitten.png")){
-            event.target.src = "/resources/net.png"; 
-            changeImage.count++;
+        if (event.target.src.includes("/resources/kitten.png")) {
+            event.target.src = "/resources/net.png";
+            oGameData.count++;
             checkForGameOver();
-        //Om bilden som vi för muspekaren över innehåller net.png så ändrar vi src till kitten.png och räknar upp count.
-        } else if(event.target.src.includes("/resources/net.png")){
+            //Om bilden som vi för muspekaren över innehåller net.png så ändrar vi src till kitten.png och räknar upp count.
+        } else if (event.target.src.includes("/resources/net.png")) {
             event.target.src = "/resources/kitten.png";
-            changeImage.count++;
+            oGameData.count++;
         }
-    } 
+    }
     //Vi anropar funktionen checkForGameOver för att se om alla bilder är nät eller inte. Är de det så anropas funktionen gameOver.
-    if(checkForGameOver()) {
+    if (checkForGameOver()) {
         gameOver();
     }
 }
@@ -106,9 +103,39 @@ function checkForGameOver() {
     let kittens = document.querySelectorAll('img[src="/resources/kitten.png"]');
     //Här kollar vi om längden på ghost och längden på kittens är lika med noll. Om det är sant returnes true annars false.
     // Vid true kommer spelet anropa funktionen gameOver().
-    if(ghosts.length === 0 && kittens.length === 0) {
+    if (ghosts.length === 0 && kittens.length === 0) {
         return true;
     } else {
         return false;
     }
+}
+
+function gameOver() {
+    console.log('Du klarade spelet på ' + oGameData.count + 'försök');
+    // document.querySelector(`#formDiv`).classList.remove(`d-none`);
+    document.querySelector(`.gameArea`).remove();
+    const logoutPage = document.createElement(`section`);
+    logoutPage.classList.add(`logoutPage`);
+    document.querySelector(`main`).appendChild(logoutPage)
+    const winnerMessage = document.createElement(`h1`);
+    winnerMessage.textContent = `Du klarade spelet på ${oGameData.count} försök! Vill du spela igen eller logga ut?`
+    const btnPlayAgain = document.createElement(`button`);
+    btnPlayAgain.textContent = `Spela igen`
+    const btnLogout = document.createElement(`button`);
+    btnLogout.textContent = `Logga ut`
+    logoutPage.appendChild(winnerMessage);
+    logoutPage.appendChild(btnPlayAgain);
+    logoutPage.appendChild(btnLogout);
+
+    btnPlayAgain.addEventListener(`click`, () => {
+        document.querySelector(`.logoutPage`).remove();
+        oGameData.count = 0;
+        initGame();
+    });
+
+    btnLogout.addEventListener(`click`, () => {
+        document.querySelector(`.logoutPage`).remove();
+        document.querySelector('#question').checked = false;
+        document.querySelector(`#formDiv`).classList.remove(`d-none`);
+    });
 }

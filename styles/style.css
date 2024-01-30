@@ -12,7 +12,8 @@ img {
 
 /* Koden ovanför är obligatorisk. Ereventuella CSS skriver ni nedanför denna kommentar */
 /* sätter storleken på gameArea till hela skärmen */
-.gameArea {
+.gameArea,
+.logoutPage {
     height: 100vh;
     width: 100vw;
 }
