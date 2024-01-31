@@ -3,23 +3,23 @@
 window.addEventListener('load', () => {
     //Här kickar ni igång ert program
 // Anropa inloggningsfunktionen för att starta spelet
-login();
+document.querySelector(`#spela`).addEventListener(`click`, login)
 });
 
 // Funktion för att logga in
-function login() {
+function login(event) {
+    event.preventDefault();
     try {
-        const usernameInput = prompt("Ange användarnamn:");
-        const passwordInput = prompt("Ange lösenord:");
+        const usernameInput = document.querySelector('#username').value;
+        const passwordInput = document.querySelector('#password').value;
 
         // Kontrollera användaren och lösenordet
         if (checkCredentials(usernameInput, passwordInput)) {
-            alert("Inloggning lyckades! Spelet startar nu.");
-            document.querySelector(`#spela`).addEventListener(`click`, validateNotAfraid)
+            console.log("Inloggning lyckades! Spelet startar nu.");
+          validateNotAfraid();
             // startGame();
         } else {
             alert("Fel användarnamn eller lösenord. Försök igen.");
-            login(); // Återupprepa inloggningen vid felaktiga uppgifter
         }
     } catch (error) {
         console.error("Ett fel inträffade vid inloggning:", error.message);
@@ -28,16 +28,36 @@ function login() {
 
 // Funktion för att kontrollera användaruppgifter
 function checkCredentials(username, password) {
-    // Implementera logik för att kontrollera användaren mot "databasen"
-    // Returnera true om användaren finns och är redo att spela, annars false
+    try{
+        if(!username || !password) {
+            throw new error('Användarnamnet och lösenordet får inte vara tomma.');
+        }
+        const user = users.find(u => u.username === username && u.password === password);
+
+        if (!user) {
+            throw new Error('Fel användarnamn eller lösenord.');
+        }
+
+        return true; // Returnera true om användaren finns och är redo att spela
+    } catch (error) {
+        console.error('Fel vid inloggning:', error.message);
+        return false; // Returnera false om något går fel
+    }
 }
 
+    
+    // Implementera logik för att kontrollera användaren mot "databasen"
+    // Returnera true om användaren finns och är redo att spela, annars false
 
 
 
 
-function validateNotAfraid(event) {
-    event.preventDefault();
+
+
+
+
+function validateNotAfraid() {
+   
     //tar input med id 'question'
     const checkbox = document.querySelector('#question');
 
