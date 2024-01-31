@@ -156,7 +156,6 @@ function checkForGameOver() {
 
 function gameOver() {
     console.log('Du klarade spelet på ' + oGameData.count + 'försök');
-    // document.querySelector(`#formDiv`).classList.remove(`d-none`);
     document.querySelector(`.gameArea`).remove();
     const logoutPage = document.createElement(`section`);
     logoutPage.classList.add(`logoutPage`);
@@ -183,5 +182,6 @@ function gameOver() {
         document.querySelector('#password').value = '';
         document.querySelector('#question').checked = false;
         document.querySelector(`#formDiv`).classList.remove(`d-none`);
+        oGameData.count = 0;
     });
 }
