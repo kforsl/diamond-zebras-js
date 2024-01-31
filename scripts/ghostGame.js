@@ -6,7 +6,7 @@
 let oGameData = {
 
     count: 0,
-
+    url: ``,
     src: ``,
     alt: ``,
 

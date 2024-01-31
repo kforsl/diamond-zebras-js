@@ -56,13 +56,15 @@ function validateNotAfraid() {
 
     if (checkbox.checked) {
         console.log('Spelare är inte rädd');
-        oGameData.src = "/resources/ghost.png";
-        oGameData.alt = "Bild på ett spöke"
+        oGameData.src = '/resources/ghost.png';
+        oGameData.alt = 'Bild på ett spöke';
+        oGameData.url = '/resources/castle.png';
         initGame()
     } else if (!checkbox.checked) {
         console.log('Spelare är rädd');
-        oGameData.src = "/resources/kitten.png";
-        oGameData.alt = "Bild på en katt"
+        oGameData.src = '/resources/kitten.png';
+        oGameData.alt = 'Bild på en katt';
+        oGameData.url = '/resources/hill.png';
         initGame()
     }
 }
@@ -81,6 +83,7 @@ function initGame() {
     const gameArea = document.createElement(`section`);
     gameArea.classList.add(`gameArea`);
     document.querySelector(`main`).appendChild(gameArea)
+    gameArea.style.backgroundImage = `url(${oGameData.url})`;
 
     // Genererar Slumpat antal spöken. 
     for (let i = 0; i < escapedGhost; i++) {
