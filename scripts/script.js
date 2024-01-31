@@ -2,62 +2,55 @@
 
 window.addEventListener('load', () => {
     //Här kickar ni igång ert program
-// Anropa inloggningsfunktionen för att starta spelet
-document.querySelector(`#spela`).addEventListener(`click`, login)
+    // Anropa inloggningsfunktionen för att starta spelet
+    document.querySelector(`#spela`).addEventListener(`click`, login)
 });
 
 // Funktion för att logga in
 function login(event) {
     event.preventDefault();
-    try {
-        const usernameInput = document.querySelector('#username').value;
-        const passwordInput = document.querySelector('#password').value;
+    const usernameInput = document.querySelector('#username').value;
+    const passwordInput = document.querySelector('#password').value;
 
-        // Kontrollera användaren och lösenordet
-        if (checkCredentials(usernameInput, passwordInput)) {
-            console.log("Inloggning lyckades! Spelet startar nu.");
-          validateNotAfraid();
-            // startGame();
-        } else {
-            alert("Fel användarnamn eller lösenord. Försök igen.");
-        }
-    } catch (error) {
-        console.error("Ett fel inträffade vid inloggning:", error.message);
+    // Kontrollera användaren och lösenordet
+    if (checkCredentials(usernameInput, passwordInput)) {
+        console.log("Inloggning lyckades! Spelet startar nu.");
+        document.querySelector(`#msg`).textContent = '';
+        validateNotAfraid();
     }
 }
 
 // Funktion för att kontrollera användaruppgifter
 function checkCredentials(username, password) {
-    try{
-        if(!username || !password) {
-            throw new error('Användarnamnet och lösenordet får inte vara tomma.');
+    try {
+        if (!username || !password) {
+            throw {
+                'msg': 'Användarnamnet och lösenordet får inte vara tomma.'
+            };
         }
         const user = users.find(u => u.username === username && u.password === password);
 
         if (!user) {
-            throw new Error('Fel användarnamn eller lösenord.');
+            throw {
+                'msg': 'Fel användarnamn eller lösenord.'
+            };
         }
 
         return true; // Returnera true om användaren finns och är redo att spela
     } catch (error) {
-        console.error('Fel vid inloggning:', error.message);
+
+        document.querySelector(`#msg`).textContent = error.msg
+        // console.error('Fel vid inloggning:', error.message);
         return false; // Returnera false om något går fel
     }
 }
 
-    
-    // Implementera logik för att kontrollera användaren mot "databasen"
-    // Returnera true om användaren finns och är redo att spela, annars false
 
-
-
-
-
-
-
+// Implementera logik för att kontrollera användaren mot "databasen"
+// Returnera true om användaren finns och är redo att spela, annars false
 
 function validateNotAfraid() {
-   
+
     //tar input med id 'question'
     const checkbox = document.querySelector('#question');
 
@@ -183,6 +176,8 @@ function gameOver() {
 
     btnLogout.addEventListener(`click`, () => {
         document.querySelector(`.logoutPage`).remove();
+        document.querySelector('#username').value = '';
+        document.querySelector('#password').value = '';
         document.querySelector('#question').checked = false;
         document.querySelector(`#formDiv`).classList.remove(`d-none`);
     });
